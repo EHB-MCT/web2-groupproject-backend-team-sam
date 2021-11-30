@@ -11,7 +11,6 @@ const port = process.env.PORT;
 const client = new MongoClient(process.env.FINAL_URL);
 const express = require('express')
 
-app.use(express.static('public'))
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
