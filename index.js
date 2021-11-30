@@ -1,33 +1,27 @@
-const express = require('express');
-const {
-    MongoClient
-} = require('mongodb');
-require('dotenv').config();
-const bodyParser = require('body-parser');
-const app = express();
-const port = process.env.PORT;
-const client = new MongoClient(process.env.FINAL_URL);
+const express = require('express')
+const app = express()
+const port = 3000
 
-
-client.connect(err => {
-    const collection = client.db("session7").collection("Levels");
-    // perform actions on the collection object
-    console.log("Hosting")
-    client.close();
-});
-
-app.use(bodyParser.json());
-app.use(express.static("public"));
-
-app.listen(port, () => {
-    console.log(`Example app listening at ${port}`)
-});
+app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-    console.log(req);
-    res.send(`Data received with id: ${req.body.id}`);
-});
+    console.log('Local root called!')
+    res.redirect('/info.html')
+})
 
-app.get('/public', (req, res) => {
-    res.send(`./index.html`);
+app.get('/test', (req, res) => {
+    console.log("Test called!")
+    res.send('Test succeeded')
+})
+
+app.get('/data', (req, res) => {
+    let exampleData = {
+        name: "Sam",
+        age: 32
+    }
+    res.send(exampleData)
+})
+
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
 })
