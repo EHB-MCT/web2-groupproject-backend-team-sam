@@ -11,12 +11,13 @@ const port = process.env.PORT;
 const client = new MongoClient(process.env.FINAL_URL);
 const express = require('express')
 
+app.use(express.static('public'))
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
 app.get('/', (req, res) => {
     console.log('Local root called!')
-    res.redirect('/info.html')
+    res.send('Hello World!')
 })
 
 app.get('/test', (req, res) => {
