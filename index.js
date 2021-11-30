@@ -9,6 +9,13 @@ const port = process.env.PORT;
 const client = new MongoClient(process.env.FINAL_URL);
 
 
+client.connect(err => {
+    const collection = client.db("session7").collection("Levels");
+    // perform actions on the collection object
+    console.log("Hosting")
+    client.close();
+});
+
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
