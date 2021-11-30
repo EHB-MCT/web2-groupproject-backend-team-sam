@@ -1,4 +1,3 @@
-const express = require('express');
 const {
     MongoClient
 } = require('mongodb');
@@ -10,25 +9,29 @@ const {
 const app = express();
 const port = process.env.PORT;
 const client = new MongoClient(process.env.FINAL_URL);
-
-<<<<<<< Updated upstream
+const express = require('express')
 
 app.use(bodyParser.json());
 app.use(express.static("public"));
-
-app.listen(port, () => {
-    console.log(`Example app listening at ${port}`)
-});
 
 app.get('/', (req, res) => {
-    console.log(req);
-    res.send(`Data received with id: ${req.body.id}`);
-});
-
-app.get('/public', (req, res) => {
-    res.send(`./index.html`);
+    console.log('Local root called!')
+    res.redirect('/info.html')
 })
-=======
-app.use(bodyParser.json());
-app.use(express.static("public"));
->>>>>>> Stashed changes
+
+app.get('/test', (req, res) => {
+    console.log("Test called!")
+    res.send('Test succeeded')
+})
+
+app.get('/data', (req, res) => {
+    let exampleData = {
+        name: "Sam",
+        age: 32
+    }
+    res.send(exampleData)
+})
+
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+})
