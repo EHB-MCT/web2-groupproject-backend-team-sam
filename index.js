@@ -1,8 +1,18 @@
+const {
+    MongoClient
+} = require('mongodb');
+require('dotenv').config();
+const bodyParser = require('body-parser');
+const {
+    response
+} = require('express');
+const app = express();
+const port = process.env.PORT;
+const client = new MongoClient(process.env.FINAL_URL);
 const express = require('express')
-const app = express()
-const port = 3000
 
-app.use(express.static('public'))
+app.use(bodyParser.json());
+app.use(express.static("public"));
 
 app.get('/', (req, res) => {
     console.log('Local root called!')
