@@ -2,11 +2,15 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+<<<<<<< Updated upstream
 app.use(express.static('public'))
+=======
+app.use(static('public'));
+>>>>>>> Stashed changes
 
 app.get('/', (req, res) => {
     console.log('Local root called!')
-    res.redirect('/info.html')
+    res.send('Hello World!')
 })
 
 app.get('/test', (req, res) => {
