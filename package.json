@@ -20,8 +20,8 @@
   "homepage": "https://github.com/EHB-MCT/web2-groupproject-backend-team-sam#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mongodb": "^4.2.0",
-    "cors": "^2.8.5"
+    "mongodb": "^4.2.0"
   }
 }
