@@ -1,5 +1,5 @@
 const {
-    MongoClient
+    MongoClient, ClientSession
 } = require('mongodb');
 require('dotenv').config();
 const bodyParser = require('body-parser');
@@ -19,18 +19,32 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-app.get('/test', (req, res) => {
-    console.log("Test called!")
-    res.send('Test succeeded')
+
+
+app.get('/challenges', async (req, res) => {
+    try {
+        //connect to the database
+        await client.connect();
+        console.log("Bingo");
+
+        const db = client.db(dbName);
+        // Use the collection "Session7"
+        const col = db.collection("challenges");
+        // Find document
+        const myDoc = await col.find({}).toArray();
+
+        // Print to the console
+        console.log(myDoc);
+        //Send back the data with the response
+        res.status(200).send(myDoc);
+    } catch (err) {
+        console.log(err.stack);
+    } finally {
+        await client.close();
+    }
 })
 
-app.get('/data', (req, res) => {
-    let exampleData = {
-        name: "Sam",
-        age: 32
-    }
-    res.send(exampleData)
-})
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
