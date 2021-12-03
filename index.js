@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 
 
 
-app.get('/challenges', async (req, res) => {
+app.get('/ALLchallenge', async (req, res) => {
     try {
         //connect to the database
         await client.connect();
@@ -47,7 +47,7 @@ app.get('/challenges', async (req, res) => {
     }
 })
 
-app.get('/challenge', async (req, res) => {
+app.get('/ONEchallenge', async (req, res) => {
 
     let challengeID = req.query.id;
 
@@ -87,7 +87,7 @@ app.get('/challenge', async (req, res) => {
     }
 })
 
-app.post('/challenges/save', async (req, res) => {
+app.post('/challenge/save', async (req, res) => {
     console.log(req.body);
     data = JSON.stringify(req.body);
     try {
