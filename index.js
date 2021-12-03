@@ -1,7 +1,7 @@
 const {
     MongoClient
 } = require("mongodb")
-const cors = require ("cors");
+const cors = require("cors");
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -32,7 +32,7 @@ app.get('/challenges', async (req, res) => {
 
         const db = client.db(dbName);
         // Use the collection "Session7"
-        const col = db.collection("challenges");
+        const col = db.collection("Challenges");
         // Find document
         const myDoc = await col.find({}).toArray();
 
