@@ -1,22 +1,25 @@
 const {
-    MongoClient, ClientSession
-} = require('mongodb');
-require('dotenv').config();
+    MongoClient
+} = require("mongodb")
+const cors = require ("cors");
+const express = require('express');
 const bodyParser = require('body-parser');
-const {
-    response
-} = require('express');
 const app = express();
-const port = process.env.PORT;
-const client = new MongoClient(process.env.FINAL_URL);
-const express = require('express')
+const port = process.env.PORT || 1337;
 
+const url = `mongodb+srv://admin:admin@cluster0.yc2s0.mongodb.net/Session7?retryWrites=true&w=majority`;
+const client = new MongoClient(url);
+
+
+const dbName = "Session7";
+
+app.use(express.static('public'))
 app.use(bodyParser.json());
-app.use(express.static("public"));
+app.use(cors());
 
 app.get('/', (req, res) => {
-    console.log('Local root called!')
-    res.send('Hello World!')
+    console.log('I am gRoot')
+    res.send('Hello WEB, my old friend. Ive come to talk with you again')
 })
 
 
