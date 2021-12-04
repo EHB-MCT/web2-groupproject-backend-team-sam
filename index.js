@@ -1,7 +1,4 @@
-const {
-    MongoClient,
-    ObjectId
-} = require("mongodb")
+const {MongoClient,ObjectId} = require("mongodb");
 const cors = require("cors");
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -27,7 +24,7 @@ app.get('/', (req, res) => {
 
 
 //Get all challenges
-app.get('/challenge', async (req, res) => {
+app.get('/challenges', async (req, res) => {
     try {
         //connect to the database
         await client.connect();
@@ -71,9 +68,9 @@ app.get('/challenges/:id', async (req, res) => {
             res.status(400).send('Challenge could not found with id: ' + req.params_id);
         }
     } catch (err) {
-        console.log(err.stack);
+        console.log(err);
         res.status(500).send({
-            error: 'error',
+            error: 'Something went wrong',
             value: error
         })
     } finally {
