@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 })
 
 
-//Get all challenges
+// DONE: Get all challenges
 app.get('/challenges', async (req, res) => {
     try {
         //connect to the database
@@ -49,7 +49,7 @@ app.get('/challenges', async (req, res) => {
     }
 })
 
-//Get one challenge
+// DONE: Get one challenge
 app.get('/challenges/:id', async (req, res) => {
     try {
         //connect to the database
@@ -81,7 +81,8 @@ app.get('/challenges/:id', async (req, res) => {
     }
 })
 
-//Save one challenge
+
+// save a challenge
 app.post('/challenge/save', async (req, res) => {
     try {
         await client.connect();
@@ -102,7 +103,30 @@ app.post('/challenge/save', async (req, res) => {
     }
 });
 
-//Post challenge
+
+
+//update a challenge
+app.post('/challenge/save', async (req, res) => {
+    try {
+        await client.connect();
+        const collection = client.db('session5').collection('boardgames2');
+
+        let insertData = await collection.insertOne(newBoardgame);
+        console.log(`Data added with _id: ${insertData.insertedId}`);
+
+        res.status(201).send(`Challenge succesfully saved with id ${req.body.challengeID}`);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            error: 'error',
+            value: error
+        });
+    } finally {
+        await client.close();
+    }
+});
+
+//delete a challenge
 app.post('/challenges', async (req, res) => {
     try {
         //connect to the database
