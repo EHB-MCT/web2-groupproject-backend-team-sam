@@ -51,7 +51,8 @@ app.get('/challenge', async (req, res) => {
 //Get one challenge
 app.get('/challenge', async (req, res) => {
 
-    let challengeID = req.query.id;
+    let _id = req.query.id;
+    console.log(_id)
 
     try {
         //connect to the database
@@ -61,22 +62,22 @@ app.get('/challenge', async (req, res) => {
         const collection = client.db('session7').collection('Levels');
 
         const query = {
-            bggid: Number(challengeID)
+            _id: Number(_id)
         };
         const options = {
             // Include only the `title` and `imdb` fields in the returned document
             projection: {
-                _challengeID: 0
+                _id: 0
             },
         };
 
-        const bg = await collection.findOne(query, options)
+        const challenge = await collection.findOne(query, options)
 
-        if (bg) {
-            res.status(200).send(bg);
+        if (challenge) {
+            res.status(200).send(challenge);
             return;
         } else {
-            res.status(400).send('Challenge could not found with id: ' + challengeID);
+            res.status(400).send('Challenge could not found with id: ' + _id);
         }
     } catch (err) {
         console.log(err.stack);
@@ -110,7 +111,7 @@ app.post('/challenge/save', async (req, res) => {
     }
 });
 
-
+//Post challenge
 app.post('/challenges', async (req, res) => {
     try {
         //connect to the database
