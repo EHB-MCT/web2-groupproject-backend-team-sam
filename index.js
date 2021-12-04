@@ -49,7 +49,7 @@ app.get('/challenge', async (req, res) => {
 })
 
 //Get one challenge
-app.get('/challenge', async (req, res) => {
+app.get('/challenges/:id', async (req, res) => {
 
     let _id = req.query.id;
     console.log(_id)
