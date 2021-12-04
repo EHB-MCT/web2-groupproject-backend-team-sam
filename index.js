@@ -1,5 +1,6 @@
 const {
-    MongoClient
+    MongoClient,
+    ObjectId
 } = require("mongodb")
 const cors = require("cors");
 const express = require('express');
@@ -50,10 +51,6 @@ app.get('/challenge', async (req, res) => {
 
 //Get one challenge
 app.get('/challenges/:id', async (req, res) => {
-
-    let _id = req.query.id;
-    console.log(_id)
-
     try {
         //connect to the database
         await client.connect();
@@ -62,15 +59,10 @@ app.get('/challenges/:id', async (req, res) => {
         const collection = client.db('session7').collection('challenges');
 
         const query = {
-            _id: req.params.id
-        };
-        const options = {
-            projection: {
-                _id: 0
-            },
+            _id: ObjectId(req.params.id)
         };
 
-        const challenge = await collection.findOne(query, options)
+        const challenge = await collection.findOne(query);
 
         if (challenge) {
             res.status(200).send(challenge);
