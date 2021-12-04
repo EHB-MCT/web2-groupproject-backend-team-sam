@@ -1,4 +1,7 @@
-const {MongoClient,ObjectId} = require("mongodb");
+const {
+    MongoClient,
+    ObjectId
+} = require("mongodb");
 const cors = require("cors");
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -65,7 +68,7 @@ app.get('/challenges/:id', async (req, res) => {
             res.status(200).send(challenge);
             return;
         } else {
-            res.status(400).send('Challenge could not found with id: ' + req.params_id);
+            res.status(400).send('Challenge could not found with id: ' + req.params.id);
         }
     } catch (err) {
         console.log(err);
