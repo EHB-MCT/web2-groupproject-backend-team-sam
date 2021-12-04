@@ -17,18 +17,19 @@ app.use(express.static('public'))
 app.use(bodyParser.json());
 app.use(cors());
 
+
+//Main page
 app.get('/', (req, res) => {
     console.log('I am gRoot')
     res.send('Hello WEB, my old friend. Ive come to talk with you again')
 })
 
 
-
-app.get('/ALLchallenge', async (req, res) => {
+//Get all challenges
+app.get('/challenge', async (req, res) => {
     try {
         //connect to the database
         await client.connect();
-        console.log("Bingo");
 
         const db = client.db(dbName);
         // Use the collection "Session7"
@@ -47,14 +48,15 @@ app.get('/ALLchallenge', async (req, res) => {
     }
 })
 
-app.get('/ONEchallenge', async (req, res) => {
+//Get one challenge
+app.get('/challenge', async (req, res) => {
 
     let challengeID = req.query.id;
 
     try {
         //connect to the database
         await client.connect();
-        console.log("Bingo");
+
 
         const collection = client.db('session7').collection('Levels');
 
@@ -87,16 +89,25 @@ app.get('/ONEchallenge', async (req, res) => {
     }
 })
 
+//Save one challenge
 app.post('/challenge/save', async (req, res) => {
-    console.log(req.body);
-    data = JSON.stringify(req.body);
     try {
-        let result = await fs.writeFile(`test.json`, data);
+        await client.connect();
+        const collection = client.db('session5').collection('boardgames2');
 
+        let insertData = await collection.insertOne(newBoardgame);
+        console.log(`Data added with _id: ${insertData.insertedId}`);
+
+        res.status(201).send(`Challenge succesfully saved with id ${req.body.challengeID}`);
     } catch (error) {
         console.log(error);
+        res.status(500).send({
+            error: 'error',
+            value: error
+        });
+    } finally {
+        await client.close();
     }
-    res.send(`Data recieved with id ${req.body.id}`);
 });
 
 
