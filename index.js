@@ -59,13 +59,12 @@ app.get('/challenges/:id', async (req, res) => {
         await client.connect();
 
 
-        const collection = client.db('session7').collection('Levels');
+        const collection = client.db('session7').collection('challenges');
 
         const query = {
-            _id: Number(_id)
+            _id: req.params.id
         };
         const options = {
-            // Include only the `title` and `imdb` fields in the returned document
             projection: {
                 _id: 0
             },
@@ -77,7 +76,7 @@ app.get('/challenges/:id', async (req, res) => {
             res.status(200).send(challenge);
             return;
         } else {
-            res.status(400).send('Challenge could not found with id: ' + _id);
+            res.status(400).send('Challenge could not found with id: ' + req.params_id);
         }
     } catch (err) {
         console.log(err.stack);
