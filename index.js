@@ -56,7 +56,7 @@ app.get('/challenges/:id', async (req, res) => {
         await client.connect();
 
 
-        const collection = client.db('session7').collection('challenges');
+        const collection = client.db('Session7').collection('Challenges');
 
         const query = {
             _id: ObjectId(req.params.id)
