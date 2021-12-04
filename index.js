@@ -11,7 +11,6 @@ const port = process.env.PORT || 1337;
 require('dotenv').config()
 const client = new MongoClient(process.env.FINAL_URL);
 
-
 const dbName = "Session7";
 
 app.use(express.static('public'))
@@ -24,7 +23,6 @@ app.get('/', (req, res) => {
     console.log('I am gRoot')
     res.send('Hello WEB, my old friend. Ive come to talk with you again')
 })
-
 
 // DONE: Get all challenges
 app.get('/challenges', async (req, res) => {
@@ -81,29 +79,48 @@ app.get('/challenges/:id', async (req, res) => {
     }
 })
 
-
 // save a challenge
-app.post('/challenge/save', async (req, res) => {
+app.post('/challenges/send', async (req, res) => {
+    if (!req.body._id || !req.body.name || !req.body.points || !req.body.course || !req.body.session) {
+        res.status(400).send("Bad request, missing: id, name, points, course or session!");
+        return;
+    }
+
     try {
         await client.connect();
-        const collection = client.db('session5').collection('boardgames2');
 
-        let insertData = await collection.insertOne(newBoardgame);
-        console.log(`Data added with _id: ${insertData.insertedId}`);
+        const challengeCollect = client.db("Session7").collection("Challenges");
 
-        res.status(201).send(`Challenge succesfully saved with id ${req.body.challengeID}`);
-    } catch (error) {
-        console.log(error);
+        const dbl = await challengeCollect.findOne({
+            _id: req.body._id
+        });
+        if (dbl) {
+            res.status(400).send("Bad request: challenge already exists with id " + req.body._id);
+            return;
+        }
+
+        let newChallenge = {
+            _id: req.body._id,
+            name: req.body.name,
+            points: req.body.points,
+            course: req.body.course,
+            session: req.body.session
+        }
+
+        let insertChallenge = await challengeCollect.insertOne(newChallenge);
+
+        res.status(201).send(`Challenge succesfully saved with name ${req.body.name}`);
+        return;
+    } catch (err) {
+        console.log(err);
         res.status(500).send({
-            error: 'error',
+            error: 'Something went wrong',
             value: error
         });
     } finally {
         await client.close();
     }
 });
-
-
 
 //update a challenge
 app.post('/challenge/save', async (req, res) => {
@@ -161,8 +178,6 @@ app.post('/challenges', async (req, res) => {
         await client.close();
     }
 })
-
-
 
 app.listen(port, () => {
     console.log(`API running at at http://localhost:${port}`)
