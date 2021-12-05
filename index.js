@@ -123,15 +123,28 @@ app.post('/challenges/send', async (req, res) => {
 });
 
 //update a challenge
-app.post('/challenge/save', async (req, res) => {
+app.put('/challenges/edit', async (req, res) => {
+
+    if (!req.body._id || !req.body.name || !req.body.points || !req.body.course || !req.body.session) {
+        res.status(400).send("Bad request, missing: id, name, points, course or session!");
+        return;
+    }
+
     try {
         await client.connect();
-        const collection = client.db('session5').collection('boardgames2');
+        const collection = client.db('Session7').collection('Challenges');
 
-        let insertData = await collection.insertOne(newBoardgame);
-        console.log(`Data added with _id: ${insertData.insertedId}`);
+        let insertData = await collection.findOneAndUpdate(collection, {
+            _id: req.body._id,
+            name: req.body.name,
+            points: req.body.points,
+            course: req.body.course,
+            session: req.body.session
+        });
 
-        res.status(201).send(`Challenge succesfully saved with id ${req.body.challengeID}`);
+        console.log(`Data added with _id: ${req.body._id}`);
+
+        res.status(201).send(`Challenge succesfully saved with id ${req.body._id}`);
     } catch (error) {
         console.log(error);
         res.status(500).send({
