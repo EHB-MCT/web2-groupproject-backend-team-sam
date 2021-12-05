@@ -123,10 +123,7 @@ app.post('/challenges/send', async (req, res) => {
 });
 
 //update a challenge
-
-
-
-app.put('/challenges/edit', async (req, res) => {
+app.put('/challenges/edit/:id', async (req, res) => {
 
     if (!req.body._id || !req.body.name || !req.body.points || !req.body.course || !req.body.session) {
         res.status(400).send("Bad request, missing: id, name, points, course or session!");
@@ -135,19 +132,27 @@ app.put('/challenges/edit', async (req, res) => {
 
     try {
         await client.connect();
+
         const collection = client.db('Session7').collection('Challenges');
 
-        let insertData = await collection.findOneAndUpdate(collection, {
-            _id: req.body._id,
-            name: req.body.name,
-            points: req.body.points,
-            course: req.body.course,
-            session: req.body.session
-        });
+        const query = {_id: ObjectId(req.params.id)};
+
+        collection.findOneAndUpdate({query}, req.body).then(function(collection){
+            res.send(collection)
+        })
+        res.status(201).send(`Challenge succesfully saved with id ${req.body._id}`);
+
+        // let insertData = await collection.findOneAndUpdate(collection, {
+        //     _id: req.body._id,
+        //     name: req.body.name,
+        //     points: req.body.points,
+        //     course: req.body.course,
+        //     session: req.body.session
+        // });
 
         console.log(`Data added with _id: ${req.body._id}`);
 
-        res.status(201).send(`Challenge succesfully saved with id ${req.body._id}`);
+ 
     } catch (error) {
         console.log(error);
         res.status(500).send({
@@ -170,7 +175,7 @@ app.delete('/deletechallenges/:id', async (req, res) => {
 
         await collection.deleteOne(query)
         res.status(200).json({
-            error: 'Succesfully deleted!',
+            succes: 'Succesfully deleted!',
         });
     }catch(error){
         console.log(error);
