@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
-//Main page
+//DONE: Main page
 app.get('/', (req, res) => {
     console.log('I am gRoot')
     res.send('Hello WEB, my old friend. Ive come to talk with you again')
@@ -79,7 +79,7 @@ app.get('/challenges/:id', async (req, res) => {
     }
 })
 
-// DONE(just cleaning up):save a challenge
+// DONE: save a challenge
 app.post('/challenges/send', async (req, res) => {
     if (!req.body._id || !req.body.name || !req.body.points || !req.body.course || !req.body.session) {
         res.status(400).send("Bad request, missing: id, name, points, course or session!");
@@ -131,17 +131,33 @@ app.put('/challenges/edit/:id', async (req, res) => {
     }
 
     try {
-        await client.connect();
 
         const collection = client.db('Session7').collection('Challenges');
+        const query = {_id: Number(req.query.id)};
 
-        const query = {_id: ObjectId(req.params.id)};
+        const challenge = await collection.findOne(query);
 
-        collection.findOneAndReplace({query}, req.body)
-        console.log(req.body);
-        res.status(201).send(`Challenge succesfully saved with id ${req.body._id}`);
+        let update = {
+            name: req.body.name,
+            course: req.body.course,
+            points: req.body.points
+        }
 
-        console.log(`Data added with _id: ${req.body._id}`);
+        if(req.body.session){
+            newChallenge.session = req.body.session;
+        }
+
+        const updateChallenge = await challenge.updateChallenge(update)
+
+
+
+
+
+        // collection.findOneAndReplace({query}, req.body)
+        // console.log(req.body);
+        // res.status(201).send(`Challenge succesfully saved with id ${req.body._id}`);
+
+        // console.log(`Data added with _id: ${req.body._id}`);
 
         // let insertData = await collection.findOneAndUpdate(query, {
         //     _id: req.body._id,
@@ -162,7 +178,7 @@ app.put('/challenges/edit/:id', async (req, res) => {
     }
 });
 
-//delete a challenge
+//DONE: delete a challenge
 app.delete('/deletechallenges/:id', async (req, res) => {
     try{
         await client.connect();
