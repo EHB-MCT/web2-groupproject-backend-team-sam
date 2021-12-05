@@ -137,10 +137,10 @@ app.put('/challenges/edit/:id', async (req, res) => {
 
         const query = {_id: ObjectId(req.params.id)};
 
-        collection.findOneAndReplace({query}, req.body).then(function(collection){
-            res.send(collection)
-        })
-
+        collection.findOneAndReplace({query}, req.body)
+        res.status(201).send(`Challenge succesfully saved with id ${req.body._id}`);
+        
+        console.log(`Data added with _id: ${req.body._id}`);
 
         // let insertData = await collection.findOneAndUpdate(query, {
         //     _id: req.body._id,
@@ -150,10 +150,6 @@ app.put('/challenges/edit/:id', async (req, res) => {
         //     session: req.body.session
         // });
 
-        res.status(201).send(`Challenge succesfully saved with id ${req.body._id}`);
-        console.log(`Data added with _id: ${req.body._id}`);
-
- 
     } catch (error) {
         console.log(error);
         res.status(500).send({
