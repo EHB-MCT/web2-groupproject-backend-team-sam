@@ -135,21 +135,21 @@ app.put('/challenges/edit/:id', async (req, res) => {
 
         const collection = client.db('Session7').collection('Challenges');
 
-        // const query = {_id: ObjectId(req.params.id)};
+        const query = {_id: ObjectId(req.params.id)};
 
         // collection.findOneAndUpdate({query}, req.body).then(function(collection){
         //     res.send(collection)
         // })
 
 
-        let insertData = await collection.findOneAndUpdate(collection, {
+        let insertData = await collection.findOneAndUpdate(query, {
             _id: req.body._id,
             name: req.body.name,
             points: req.body.points,
             course: req.body.course,
             session: req.body.session
         });
-        
+
         res.status(201).send(`Challenge succesfully saved with id ${req.body._id}`);
         console.log(`Data added with _id: ${req.body._id}`);
 
