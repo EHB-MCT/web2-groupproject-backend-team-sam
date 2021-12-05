@@ -182,3 +182,6 @@ app.post('/challenges', async (req, res) => {
 app.listen(port, () => {
     console.log(`API running at at http://localhost:${port}`)
 })
+
+
+console.log("Some shit")
