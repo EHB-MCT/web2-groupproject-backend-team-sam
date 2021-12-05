@@ -123,7 +123,7 @@ app.post('/challenges/send', async (req, res) => {
 });
 
 //update a challenge
-app.post('/challenge/save', async (req, res) => {
+app.put('/challenge/save', async (req, res) => {
     try {
         await client.connect();
         const collection = client.db('session5').collection('boardgames2');
@@ -144,38 +144,24 @@ app.post('/challenge/save', async (req, res) => {
 });
 
 //delete a challenge
-app.post('/challenges', async (req, res) => {
-    try {
-        //connect to the database
+app.delete('/deletechallenges/:id', async (req, res) => {
+    try{
         await client.connect();
-        console.log("Bingo");
 
-        const db = client.db(dbName);
-        // Use the collection "Session7"
-        const col = db.collection("challenges");
+        const collection = client.db('Session7').collection('Challenges');
 
-        // Construct a document                                                                                                                                                              
-        let challengeDoc = {
-            name: req.body.name,
-            points: req.body.points,
-            course: req.body.course,
-            session: req.body.session
-        }
+        const query = {_id: ObjectId(req.params.id)};
 
-        res.status(200).send('succesfully uploaded')
-
-        // Insert a single document, wait for promise so we can read it back
-        const p = await col.insertOne(challengeDoc);
-
-        // Find one document
-        const myDoc = await col.findOne();
-
-        // Print to the console
-        console.log(myDoc);
-    } catch (err) {
-        console.log(err.stack);
-    } finally {
-        await client.close();
+        await collection.deleteOne(query)
+        res.status(200).json({
+            error: 'Succesfully deleted!',
+        });
+    }catch(error){
+        console.log(error);
+        res.status(500).send({
+            error: 'Something went wrong',
+            value: error
+        })
     }
 })
 
