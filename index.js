@@ -100,11 +100,11 @@ app.post('/challenges/send', async (req, res) => {
         }
 
         let newChallenge = {
-            _id: "32981",
-            name: "test",
-            points: "3821",
-            course: "work plz",
-            session: "sunday funday"
+            _id: req.body._id,
+            name: req.body.name,
+            points: req.body.points,
+            course: req.body.course,
+            session: req.body.session
         }
 
         let insertChallenge = await challengeCollect.insertOne(newChallenge);
