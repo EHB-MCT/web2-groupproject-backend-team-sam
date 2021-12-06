@@ -144,7 +144,7 @@ app.put('/challenges/edit/:id', async (req, res) => {
             _id: ObjectId(req.query.id)
         };
 
-        const challenge = await collection.findOne(query);
+        const challenge = await collection.updateOne(query);
 
         let update = {
             $set: {
