@@ -62,7 +62,7 @@ app.get('/challenges/:id', async (req, res) => {
         const collection = client.db('Session7').collection('Challenges');
 
         const query = {
-            id: ObjectId(req.params.id)
+            _id: ObjectId(req.params.id)
         };
 
         const challenge = await collection.findOne(query);
@@ -86,7 +86,7 @@ app.get('/challenges/:id', async (req, res) => {
 
 // DONE: add a challenge
 app.post('/challenges/send', async (req, res) => {
-    if (!req.body.id || !req.body.name || !req.body.points || !req.body.course || !req.body.session) {
+    if (!req.body._id || !req.body.name || !req.body.points || !req.body.course || !req.body.session) {
         res.status(400).send("Bad request, missing: id, name, points, course or session!");
         return;
     }
@@ -104,7 +104,7 @@ app.post('/challenges/send', async (req, res) => {
         }
 
         let newChallenge = {
-            id: req.body.id,
+            _id: req.body.id,
             name: req.body.name,
             points: req.body.points,
             course: req.body.course,
@@ -116,7 +116,7 @@ app.post('/challenges/send', async (req, res) => {
         res.status(201).send(`Challenge succesfully saved with name ${req.body.name}`);
         return;
 
-        
+
     } catch (err) {
         console.log(err);
         res.status(500).send({
