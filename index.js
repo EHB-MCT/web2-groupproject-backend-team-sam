@@ -145,12 +145,10 @@ app.put('/challenges/edit/:id', async (req, res) => {
         };
 
         let update = {
-            $set: {
                 _id: req.body._id,
                 name: req.body.name,
                 course: req.body.course,
                 points: req.body.points
-            },
         };
 
         const updateChallenge = await collection.updateOne(query, update)
