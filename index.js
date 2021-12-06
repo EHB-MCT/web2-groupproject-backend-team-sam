@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
- });
+});
 
 
 //DONE: Main page
@@ -35,7 +35,7 @@ app.get('/challenges', async (req, res) => {
 
         // Use the collection "Session7"
         const col = db.collection("Challenges");
-        
+
         // Find document
         const myDoc = await col.find({}).toArray();
 
@@ -130,7 +130,6 @@ app.post('/challenges/send', async (req, res) => {
 
 //update a challenge
 app.put('/challenges/edit/:id', async (req, res) => {
-
     if (!req.body._id || !req.body.name || !req.body.points || !req.body.course || !req.body.session) {
         res.status(400).send("Bad request, missing: id, name, points, course or session!");
         return;
@@ -138,26 +137,25 @@ app.put('/challenges/edit/:id', async (req, res) => {
 
     try {
 
+        await client.connect();
+
         const collection = client.db('Session7').collection('Challenges');
-        const query = {_id: Number(req.query.id)};
+        const query = {
+            _id: ObjectId(req.query.id)
+        };
 
         const challenge = await collection.findOne(query);
 
         let update = {
-            name: req.body.name,
-            course: req.body.course,
-            points: req.body.points
-        }
+            $set: {
+                name: req.body.name,
+                course: req.body.course,
+                points: req.body.points
+            },
+        };
 
-        if(req.body.session){
-            newChallenge.session = req.body.session;
-        }
-
-        const updateChallenge = await challenge.updateChallenge(update)
-
-
-
-
+        const updateChallenge = await challenge.updateChallenge(query, update)
+        res.status(201).send(`Challenge with id "${req.query.id}" with succes updated!.`);
 
         // collection.findOneAndReplace({query}, req.body)
         // console.log(req.body);
@@ -176,7 +174,7 @@ app.put('/challenges/edit/:id', async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).send({
-            error: 'error',
+            error: 'Something went wrong',
             value: error
         });
     } finally {
@@ -186,18 +184,20 @@ app.put('/challenges/edit/:id', async (req, res) => {
 
 //DONE: delete a challenge
 app.delete('/deletechallenges/:id', async (req, res) => {
-    try{
+    try {
         await client.connect();
 
         const collection = client.db('Session7').collection('Challenges');
 
-        const query = {_id: ObjectId(req.params.id)};
+        const query = {
+            _id: ObjectId(req.params.id)
+        };
 
         await collection.deleteOne(query)
         res.status(200).json({
             succes: 'Succesfully deleted!',
         });
-    }catch(error){
+    } catch (error) {
         console.log(error);
         res.status(500).send({
             error: 'Something went wrong',
