@@ -144,8 +144,6 @@ app.put('/challenges/edit/:id', async (req, res) => {
             _id: ObjectId(req.query.id)
         };
 
-        const challenge = await collection.updateOne(query);
-
         let update = {
             $set: {
                 name: req.body.name,
@@ -154,7 +152,7 @@ app.put('/challenges/edit/:id', async (req, res) => {
             },
         };
 
-        const updateChallenge = await challenge.updateChallenge(query, update)
+        const updateChallenge = await collection.updateOne(query, update)
         res.status(201).send(`Challenge with id "${req.query.id}" with succes updated!.`);
 
         // collection.findOneAndReplace({query}, req.body)
