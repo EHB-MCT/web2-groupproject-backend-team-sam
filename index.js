@@ -23,8 +23,7 @@ app.use((req, res, next) => {
 
 //DONE: Main page
 app.get('/', (req, res) => {
-    console.log('I am gRoot')
-    res.send('Hello WEB, my old friend. Ive come to talk with you again')
+    res.status(300).redirect('/info.html');
 })
 
 // DONE: Get all challenges
@@ -32,10 +31,11 @@ app.get('/challenges', async (req, res) => {
     try {
         //connect to the database
         await client.connect();
-
         const db = client.db(dbName);
+
         // Use the collection "Session7"
         const col = db.collection("Challenges");
+        
         // Find document
         const myDoc = await col.find({}).toArray();
 
@@ -45,6 +45,10 @@ app.get('/challenges', async (req, res) => {
         res.status(200).send(myDoc);
     } catch (err) {
         console.log(err.stack);
+        res.status(500).send({
+            error: 'Something went wrong',
+            value: error
+        });
     } finally {
         await client.close();
     }
@@ -55,12 +59,10 @@ app.get('/challenges/:id', async (req, res) => {
     try {
         //connect to the database
         await client.connect();
-
-
         const collection = client.db('Session7').collection('Challenges');
 
         const query = {
-            _id: ObjectId(req.params.id)
+            id: ObjectId(req.params.id)
         };
 
         const challenge = await collection.findOne(query);
@@ -82,28 +84,27 @@ app.get('/challenges/:id', async (req, res) => {
     }
 })
 
-// DONE: save a challenge
+// DONE: add a challenge
 app.post('/challenges/send', async (req, res) => {
-    if (!req.body._id || !req.body.name || !req.body.points || !req.body.course || !req.body.session) {
+    if (!req.body.id || !req.body.name || !req.body.points || !req.body.course || !req.body.session) {
         res.status(400).send("Bad request, missing: id, name, points, course or session!");
         return;
     }
 
     try {
         await client.connect();
-
         const challengeCollect = client.db("Session7").collection("Challenges");
 
-        const dbl = await challengeCollect.findOne({
+        const db = await challengeCollect.findOne({
             _id: req.body._id
         });
-        if (dbl) {
-            res.status(400).send("Bad request: challenge already exists with id " + req.body._id);
+        if (db) {
+            res.status(400).send("Bad request: challenge already exists with id " + req.body.id);
             return;
         }
 
         let newChallenge = {
-            _id: req.body._id,
+            id: req.body.id,
             name: req.body.name,
             points: req.body.points,
             course: req.body.course,
@@ -114,6 +115,8 @@ app.post('/challenges/send', async (req, res) => {
 
         res.status(201).send(`Challenge succesfully saved with name ${req.body.name}`);
         return;
+
+        
     } catch (err) {
         console.log(err);
         res.status(500).send({
