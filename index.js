@@ -154,10 +154,10 @@ app.put('/challenges/edit/:id', async (req, res) => {
 
         const updateChallenge = await collection.updateOne(query, update)
         if (updateChallenge) {
-            res.status(201).send(`Challenge with id "${req.body.id}" with succes updated!.`);
+            res.status(201).send(`Challenge with id "${req.body._id}" with succes updated!.`);
             return;
         } else {
-            res.status(400).send('Challenge could not found with id: ' + req.body.id);
+            res.status(400).send('Challenge could not found with id: ' + req.body._id);
         }
 
     } catch (error) {
