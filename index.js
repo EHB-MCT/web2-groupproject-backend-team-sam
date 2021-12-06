@@ -141,24 +141,28 @@ app.put('/challenges/edit/:id', async (req, res) => {
 
         const collection = client.db('Session7').collection('Challenges');
         const query = {
-            _id: ObjectId(req.query.id)
+            _id: ObjectId(req.params.id)
         };
 
         let update = {
-                _id: req.body._id,
+            $set: {
                 name: req.body.name,
                 course: req.body.course,
                 points: req.body.points
+            }
         };
 
-        const updateChallenge = await collection.updateOne(query, update)
+        await collection.updateOne(query, update)
+        res.status(200).json({
+            message: 'Succesfully Updated Challenge: ' + req.body.name
+        });
 
-        if (updateChallenge) {
-            res.status(201).send(`Challenge with id "${req.query.id}" with succes updated!.`);
-            return;
-        } else {
-            res.status(400).send('Challenge could not found with id: ' + req.query.id);
-        }
+        // if (updateChallenge) {
+        //     res.status(201).send(`Challenge with id "${req.query.id}" with succes updated!.`);
+        //     return;
+        // } else {
+        //     res.status(400).send('Challenge could not found with id: ' + req.query.id);
+        // }
 
 
         // collection.findOneAndReplace({query}, req.body)
