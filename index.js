@@ -152,17 +152,13 @@ app.put('/challenges/edit/:id', async (req, res) => {
             }
         };
 
-        await collection.updateOne(query, update)
-        res.status(200).json({
-            message: 'Succesfully Updated Challenge: ' + req.body.name
-        });
-
-        // if (updateChallenge) {
-        //     res.status(201).send(`Challenge with id "${req.query.id}" with succes updated!.`);
-        //     return;
-        // } else {
-        //     res.status(400).send('Challenge could not found with id: ' + req.query.id);
-        // }
+        const updateChallenge = await collection.updateOne(query, update)
+        if (updateChallenge) {
+            res.status(201).send(`Challenge with id "${req.query.id}" with succes updated!.`);
+            return;
+        } else {
+            res.status(400).send('Challenge could not found with id: ' + req.query.id);
+        }
 
 
         // collection.findOneAndReplace({query}, req.body)
