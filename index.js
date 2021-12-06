@@ -141,7 +141,7 @@ app.put('/challenges/edit/:id', async (req, res) => {
 
         const collection = client.db('Session7').collection('Challenges');
         const query = {
-            _id: ObjectId(req.query.id)
+            _id: ObjectId(req.body.id)
         };
 
         let update = {
