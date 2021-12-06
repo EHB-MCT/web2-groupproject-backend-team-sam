@@ -155,7 +155,13 @@ app.put('/challenges/edit/:id', async (req, res) => {
 
         const updateChallenge = await collection.updateOne(query, update)
 
-        res.status(201).send(`Challenge with id "${req.query.id}" with succes updated!.`);
+        if (updateChallenge) {
+            res.status(201).send(`Challenge with id "${req.query.id}" with succes updated!.`);
+            return;
+        } else {
+            res.status(400).send('Challenge could not found with id: ' + req.params.id);
+        }
+
 
         // collection.findOneAndReplace({query}, req.body)
         // console.log(req.body);
