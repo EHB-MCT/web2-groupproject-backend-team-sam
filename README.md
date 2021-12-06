@@ -10,3 +10,8 @@
 * POST /challenges/send = create a new challenge
 * DELETE /deletechallenges/:id = delete a challenge
 * PUT /challenges/edit/:id = change a challenge
+
+
+### Sources/Tools
+
+readme.so
