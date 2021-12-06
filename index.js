@@ -152,7 +152,7 @@ app.put('/challenges/edit/:id', async (req, res) => {
             },
         };
 
-        const updateChallenge = await collection.updateOne(query, update)
+        const updateChallenge = await collection.findOneAndReplace(query, update)
         res.status(201).send(`Challenge with id "${req.query.id}" with succes updated!.`);
 
         // collection.findOneAndReplace({query}, req.body)
