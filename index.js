@@ -128,7 +128,7 @@ app.post('/challenges/send', async (req, res) => {
     }
 });
 
-//update a challenge
+//DONE: update a challenge
 app.put('/challenges/edit/:id', async (req, res) => {
     if (!req.body._id || !req.body.name || !req.body.points || !req.body.course || !req.body.session) {
         res.status(400).send("Bad request, missing: id, name, points, course or session!");
@@ -154,26 +154,11 @@ app.put('/challenges/edit/:id', async (req, res) => {
 
         const updateChallenge = await collection.updateOne(query, update)
         if (updateChallenge) {
-            res.status(201).send(`Challenge with id "${req.query.id}" with succes updated!.`);
+            res.status(201).send(`Challenge with id "${req.body.id}" with succes updated!.`);
             return;
         } else {
-            res.status(400).send('Challenge could not found with id: ' + req.query.id);
+            res.status(400).send('Challenge could not found with id: ' + req.body.id);
         }
-
-
-        // collection.findOneAndReplace({query}, req.body)
-        // console.log(req.body);
-        // res.status(201).send(`Challenge succesfully saved with id ${req.body._id}`);
-
-        // console.log(`Data added with _id: ${req.body._id}`);
-
-        // let insertData = await collection.findOneAndUpdate(query, {
-        //     _id: req.body._id,
-        //     name: req.body.name,
-        //     points: req.body.points,
-        //     course: req.body.course,
-        //     session: req.body.session
-        // });
 
     } catch (error) {
         console.log(error);
