@@ -163,8 +163,8 @@ app.put('/challenges/:id', async (req, res) => {
         if (updateChallenge) {
             res.status(201).send(
                 data = {
-                succes: "Challenge with succes updated!.",
-            });
+                    "succes": "Challenge with succes updated!.",
+                });
             return;
         } else {
             res.status(400).send({
