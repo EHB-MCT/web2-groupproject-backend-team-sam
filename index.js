@@ -92,7 +92,7 @@ app.get('/challenges/:id', async (req, res) => {
 
 // DONE: add a challenge
 app.post('/challenges/send', async (req, res) => {
-    if (!req.body._id || !req.body.name || !req.body.points || !req.body.course || !req.body.session) {
+    if (!req.body.name || !req.body.points || !req.body.course || !req.body.session) {
         res.status(400).send("Bad request, missing: id, name, points, course or session!");
         return;
     }
