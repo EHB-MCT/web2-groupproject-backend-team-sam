@@ -41,8 +41,10 @@ app.get('/challenges', async (req, res) => {
 
         // Print to the console
         console.log(myDoc);
+
         //Send back the data with the response
         res.status(200).send(myDoc);
+        
     } catch (err) {
         console.log(err.stack);
         res.status(500).send({
