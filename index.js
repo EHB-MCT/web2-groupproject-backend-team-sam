@@ -162,7 +162,7 @@ app.put('/challenges/:id', async (req, res) => {
         const updateChallenge = await collection.updateOne(query, update)
         if (updateChallenge) {
             res.status(201).send({
-                succes: `Challenge with id "${req.body._id}" with succes updated!.`,
+                succes: "Challenge with succes updated!.",
             });
             return;
         } else {
