@@ -44,7 +44,7 @@ app.get('/challenges', async (req, res) => {
 
         //Send back the data with the response
         res.status(200).send(myDoc);
-        
+
     } catch (err) {
         console.log(err.stack);
         res.status(500).send({
@@ -150,7 +150,8 @@ app.put('/challenges/edit/:id', async (req, res) => {
             $set: {
                 name: req.body.name,
                 course: req.body.course,
-                points: req.body.points
+                points: req.body.points,
+                session: req.body.session,
             }
         };
 
