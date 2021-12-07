@@ -161,9 +161,7 @@ app.put('/challenges/:id', async (req, res) => {
 
         const updateChallenge = await collection.updateOne(query, update)
         if (updateChallenge) {
-            res.status(201).json(
-
-                data = {
+            res.status(201).json({
                     succes: "Challenge with succes updated!.",
                 }
             );
