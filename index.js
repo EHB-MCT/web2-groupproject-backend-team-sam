@@ -131,7 +131,7 @@ app.post('/challenges/send', async (req, res) => {
 });
 
 //DONE: update a challenge
-app.put('/challenges/edit/:id', async (req, res) => {
+app.put('/challenges/:id', async (req, res) => {
     if (!req.body._id || !req.body.name || !req.body.points || !req.body.course || !req.body.session) {
         res.status(400).send("Bad request, missing: id, name, points, course or session!");
         return;
@@ -175,7 +175,7 @@ app.put('/challenges/edit/:id', async (req, res) => {
 });
 
 //DONE: delete a challenge
-app.delete('/deletechallenges/:id', async (req, res) => {
+app.delete('/challenges/:id', async (req, res) => {
     try {
         await client.connect();
 
